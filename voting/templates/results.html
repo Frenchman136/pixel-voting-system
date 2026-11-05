@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem;">Results</h2>
+
+{% for item in data %}
+<div class="card">
+    <h3>{{ item.position.title }} <small>({{ item.total }} vote{{ item.total|pluralize }})</small></h3>
+    {% for c in item.candidates %}
+        <p style="margin-top:.6rem;">{{ c.name }}: <strong>{{ c.total }}</strong></p>
+        <div class="bar">
+            <span style="width: {% if item.total %}{% widthratio c.total item.total 100 %}{% else %}0{% endif %}%"></span>
+        </div>
+    {% empty %}
+        <p>No candidates.</p>
+    {% endfor %}
+</div>
+{% empty %}
+<p>No positions yet.</p>
+{% endfor %}
+{% endblock %}

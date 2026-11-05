@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Voting System{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f7fa; color: #222; line-height: 1.6; }
+        header { background: #1e293b; color: #fff; padding: 1rem 2rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+        header a, header button { color: #fff; text-decoration: none; margin-left: 1rem;
+                 background: none; border: none; font-size: 1rem; cursor: pointer; }
+        header a:hover, header button:hover { color: #38bdf8; }
+        main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: #fff; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+        .btn { display: inline-block; padding: .6rem 1.2rem; background: #0ea5e9; color: #fff;
+               border: none; border-radius: 6px; text-decoration: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background: #0284c7; }
+        .msg { padding: .8rem 1rem; border-radius: 6px; margin-bottom: 1rem; background: #dcfce7; }
+        .badge { padding: .15rem .6rem; border-radius: 99px; font-size: .85rem; background: #e2e8f0; }
+        .done { background: #bbf7d0; }
+        label { display: block; padding: .4rem 0; cursor: pointer; }
+        input[type=text], input[type=password] { width: 100%; padding: .5rem; margin: .3rem 0 .8rem; }
+        .bar { background: #e2e8f0; border-radius: 6px; height: 14px; overflow: hidden; }
+        .bar span { display: block; height: 100%; background: #0ea5e9; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Voting System</h1>
+        <nav style="display:flex; align-items:center;">
+            {% if user.is_authenticated %}
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'ballot' %}">Vote</a>
+                {% if user.is_staff %}<a href="{% url 'results' %}">Results</a>{% endif %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout ({{ user.username }})</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% for message in messages %}
+            <div class="msg">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
