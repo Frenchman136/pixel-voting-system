@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem;">Your Ballot</h2>
+
+{% if positions %}
+<form method="post">
+    {% csrf_token %}
+    {% for position in positions %}
+    <div class="card">
+        <h3>{{ position.title }}</h3>
+        {% for candidate in position.candidates.all %}
+        <label>
+            <input type="radio" name="position_{{ position.id }}" value="{{ candidate.id }}">
+            <strong>{{ candidate.name }}</strong>
+            {% if candidate.manifesto %}<br><small>{{ candidate.manifesto }}</small>{% endif %}
+        </label>
+        {% empty %}
+        <p>No candidates yet.</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button class="btn" type="submit">Submit votes</button>
+</form>
+{% else %}
+<div class="card">
+    <p>There is nothing left for you to vote on right now.</p>
+</div>
+{% endif %}
+{% endblock %}

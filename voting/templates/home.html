@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem;">Positions</h2>
+
+{% for item in positions %}
+<div class="card">
+    <h3>{{ item.position.title }}</h3>
+    {% if item.voted %}
+        <span class="badge done">You have voted</span>
+    {% elif item.position.is_open %}
+        <span class="badge">Voting open</span>
+    {% else %}
+        <span class="badge">Closed</span>
+    {% endif %}
+</div>
+{% empty %}
+<p>No positions have been created yet.</p>
+{% endfor %}
+
+<a class="btn" href="{% url 'ballot' %}">Go to ballot</a>
+{% endblock %}
